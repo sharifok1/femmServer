@@ -78,6 +78,7 @@ async function run(){
     const orders = order.find()
     const result  = await orders.toArray()
     res.send(result);
+    console.log(result)
   })
   //--------------------------shipping order---------------------shipping--put/update
   app.put('/order/status', async(req,res)=>{
