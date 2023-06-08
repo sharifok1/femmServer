@@ -5,10 +5,16 @@ const cors = require('cors');
 const app = express()
 require('dotenv').config();
 const  ObjectId = require('mongodb').ObjectId;
-const port = process.env.PORT||5000
+const port = process.env.PORT||8000
 
 app.use(cors());
 app.use(express.json());
+
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+})
 
 // const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@innerfashion.rsckbv2.mongodb.net/?retryWrites=true&w=majority`
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@innerfashion.rsckbv2.mongodb.net/?retryWrites=true&w=majority`
@@ -109,9 +115,15 @@ async function run(){
     app.delete("/deliveryStatus/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
-      const result = await deliveryStatus.deleteOne(query);
-      console.log("deleting user with id ", result);
-      res.json(result);
+      console.log("Deleting user with id", id);
+      try {
+        const result = await deliveryStatus.deleteOne(query);
+        console.log("Deletion result:", result);
+        res.json(result);
+      } catch (error) {
+        console.error("Error occurred during deletion:", error);
+        res.status(500).json({ error: "An error occurred during deletion" });
+      }
     });
   } finally {
     // await client.close();
