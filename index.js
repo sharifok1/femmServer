@@ -7,8 +7,10 @@ require('dotenv').config();
 const  ObjectId = require('mongodb').ObjectId;
 const port = process.env.PORT||5000
 
-app.use(cors());
-app.use(express.json());
+
+app.use(cors({
+  origin: 'https://femmewearbd.com'
+  }));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
