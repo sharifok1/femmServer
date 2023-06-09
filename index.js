@@ -9,7 +9,7 @@ const port = process.env.PORT||5000
 
 
 app.use(cors({
-  origin: 'https://api.femmewearbd.com/'
+  origin: 'femmewearbd.com'
   }));
 
 app.use((req, res, next) => {
