@@ -1,7 +1,7 @@
 const express = require ('express');
 const { MongoClient } = require("mongodb");
 const cors = require('cors');
-// const fileupload = require('express-fileupload');
+
 const app = express()
 require('dotenv').config();
 const  ObjectId = require('mongodb').ObjectId;
@@ -9,7 +9,7 @@ const port = process.env.PORT||5000
 
 
 app.use(cors({
-  origin: 'femmewearbd.com'
+  origin: 'https://femmewearbd.com/'
   }));
 
 app.use((req, res, next) => {
