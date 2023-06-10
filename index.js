@@ -156,7 +156,8 @@ async function run(){
       // File has been uploaded to the /var/productImg directory
       // You can access the file details via req.file
       const filePath = req.file.path;
-      console.log('File uploaded:', filePath);   
+      const imageUrl = `${serverBaseUrl}${filePath}`;
+      console.log('File uploaded:', imageUrl);   
       res.json({ message: 'File uploaded successfully', filePath: filePath });
     });
 
