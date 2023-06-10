@@ -157,7 +157,7 @@ async function run(){
       // You can access the file details via req.file
       const filePath = req.file.path;
       console.log('File uploaded:', filePath);   
-      res.json({ message: 'File uploaded successfully' },filePath);
+      res.json({ message: 'File uploaded successfully', filePath: filePath });
     });
 
 
