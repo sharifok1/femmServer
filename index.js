@@ -162,6 +162,19 @@ async function run(){
       res.json({ message: 'File uploaded successfully', filePath: imageUrl});
     });
 
+    // get file from server//
+    app.get('/uploadProductImg/:filename', (req, res) => {
+      const { filename } = req.params;
+      const imagePath = path.join(__dirname, 'var', 'productImg', filename);
+      // Check if the image file exists
+      if (fs.existsSync(imagePath)) {
+        // Send the image file as a response
+        res.sendFile(imagePath);
+      } else {
+        // Image file not found
+        res.status(404).json({ message: 'Image not found' });
+      }
+    });
 
 
 
