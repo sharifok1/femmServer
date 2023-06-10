@@ -1,7 +1,8 @@
 const express = require('express');
 const { MongoClient } = require("mongodb");
 const cors = require('cors');
-
+const multer = require('multer');
+const path = require('path');
 const app = express();
 require('dotenv').config();
 const ObjectId = require('mongodb').ObjectId;
@@ -15,7 +16,7 @@ app.use(express.json());
 
 // CORS Configuration
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "https://femmewearbd.com");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, PATCH, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
@@ -25,6 +26,21 @@ app.use((req, res, next) => {
 
   next();
 });
+
+// Multer configuration
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '/var/productImg');
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + ext);
+  },
+});
+
+const upload = multer({ storage: storage });
+
 
 // const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@innerfashion.rsckbv2.mongodb.net/?retryWrites=true&w=majority`
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@innerfashion.rsckbv2.mongodb.net/?retryWrites=true&w=majority`
@@ -93,7 +109,7 @@ async function run(){
     const orders = order.find()
     const result  = await orders.toArray()
     res.send(result);
-    console.log(result)
+    // console.log(result)
   })
   //--------------------------shipping order---------------------shipping--put/update
   app.put('/order/status', async(req,res)=>{
@@ -125,16 +141,31 @@ async function run(){
     app.delete("/deliveryStatus/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
-      console.log("Deleting user with id", id);
       try {
         const result = await deliveryStatus.deleteOne(query);
-        console.log("Deletion result:", result);
         res.json(result);
       } catch (error) {
         console.error("Error occurred during deletion:", error);
         res.status(500).json({ error: "An error occurred during deletion" });
       }
     });
+
+
+    // Add an product image upload route server
+    app.post('/uploadProductImg', upload.single('image'), async (req, res) => {
+      // File has been uploaded to the /var/productImg directory
+      // You can access the file details via req.file
+      const filePath = req.file.path;
+      console.log('File uploaded:', filePath);   
+      res.json({ message: 'File uploaded successfully' });
+    });
+
+
+
+
+
+
+
   } finally {
     // await client.close();
   }
