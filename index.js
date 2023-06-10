@@ -3,6 +3,7 @@ const { MongoClient } = require("mongodb");
 const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const app = express();
 require('dotenv').config();
 const ObjectId = require('mongodb').ObjectId;
@@ -175,7 +176,6 @@ async function run(){
         res.status(404).json({ message: 'Image not found' });
       }
     });
-
 
 
 
