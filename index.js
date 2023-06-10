@@ -159,9 +159,8 @@ async function run(){
       const serverBaseUrl = 'https://api.femmewearbd.com';
       const imageUrl = `${serverBaseUrl}${filePath}`;
       console.log('File uploaded:', imageUrl);   
-      res.json({ message: 'File uploaded successfully', filePath: filePath });
+      res.json({ message: 'File uploaded successfully', filePath: imageUrl});
     });
-
 
 
 
