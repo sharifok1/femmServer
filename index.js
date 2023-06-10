@@ -1,27 +1,28 @@
-const express = require ('express');
+const express = require('express');
 const { MongoClient } = require("mongodb");
 const cors = require('cors');
 
-const app = express()
+const app = express();
 require('dotenv').config();
-const  ObjectId = require('mongodb').ObjectId;
-const port = process.env.PORT||5000
+const ObjectId = require('mongodb').ObjectId;
+const port = process.env.PORT || 5000;
 
+app.use(cors());
 
-app.use(cors({
-  origin: 'https://femmewearbd.com/'
-  }));
+app.use(express.json());
 
+// ...
+
+// CORS Configuration
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "OPTIONS, GET, POST, PUT, PATCH, DELETE"
-  );
+  res.setHeader("Access-Control-Allow-Origin", "https://femmewearbd.com");
+  res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, PATCH, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
   if (req.method === "OPTIONS") {
     return res.sendStatus(200);
   }
+
   next();
 });
 
