@@ -166,7 +166,7 @@ async function run(){
     // get file from server//
     app.get('/uploadProductImg/:filename', (req, res) => {
       const { filename } = req.params;
-      const imagePath = path.join(__dirname, 'var', 'productImg', filename);
+      const imagePath = path.join('/', 'var', 'productImg', filename);
       // Check if the image file exists
       if (fs.existsSync(imagePath)) {
         // Send the image file as a response
