@@ -7,7 +7,7 @@ const fs = require('fs');
 const app = express();
 require('dotenv').config();
 const ObjectId = require('mongodb').ObjectId;
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8000;
 
 app.use(cors());
 
@@ -152,7 +152,7 @@ async function run(){
     });
 
 
-    // Add an product image upload route server
+    // Add an product image to to the hostainger server (path: var/productImg)
     app.post('/uploadProductImg', upload.single('image'), async (req, res) => {
       // File has been uploaded to the /var/productImg directory
       // You can access the file details via req.file
@@ -166,11 +166,12 @@ async function run(){
     // get file from server//
     app.get('/uploadProductImg/:filename', (req, res) => {
       const { filename } = req.params;
-      const imagePath = path.join('/', 'var', 'productImg', filename);
+      const imageUrl = path.join('/', 'var', 'productImg', filename);
       // Check if the image file exists
-      if (fs.existsSync(imagePath)) {
+      if (fs.existsSync(imageUrl)) {
         // Send the image file as a response
-        res.sendFile(imagePath);
+        res.sendFile(imageUrl);
+        res.json({img: imageUrl});
       } else {
         // Image file not found
         res.status(404).json({ message: 'Image not found' });
@@ -187,9 +188,9 @@ async function run(){
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
-  res.send('inner fashion server IS RUNNING...')
+  res.send('femmewearbd server IS RUNNING...')
 })
 
 app.listen(port, () => {
-  console.log(`innerfashion server is running from port ${port}`)
+  console.log(`femmewearbd server is running from port ${port}`)
 })
