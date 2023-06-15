@@ -159,7 +159,7 @@ async function run(){
       const filePath = req.file.path;
       const imageUrl = `https://api.femmewearbd.com${filePath}`;
       console.log('File uploaded:', imageUrl);   
-      res.json({ message: 'File uploaded successfully', imageUrl:imageUrl});
+      res.json({ message: 'image uploaded successfully', imageUrl:imageUrl});
     });
 
     // get file from server//
