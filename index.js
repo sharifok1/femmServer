@@ -157,28 +157,25 @@ async function run(){
       // File has been uploaded to the /var/productImg directory
       // You can access the file details via req.file
       const filePath = req.file.path;
-      const serverBaseUrl = 'https://api.femmewearbd.com';
-      const imageUrl = `${serverBaseUrl}${filePath}`;
+      const imageUrl = `https://api.femmewearbd.com${filePath}`;
       console.log('File uploaded:', imageUrl);   
-      res.json({ message: 'File uploaded successfully', filePath: imageUrl});
+      res.json({ message: 'File uploaded successfully', imageUrl:imageUrl});
     });
 
     // get file from server//
     app.get('/uploadProductImg/:filename', (req, res) => {
       const { filename } = req.params;
       const imageUrl = path.join('/', 'var', 'productImg', filename);
+      
       // Check if the image file exists
       if (fs.existsSync(imageUrl)) {
         // Send the image file as a response
         res.sendFile(imageUrl);
-        res.json({img: imageUrl});
       } else {
         // Image file not found
         res.status(404).json({ message: 'Image not found' });
       }
     });
-
-
 
 
   } finally {
