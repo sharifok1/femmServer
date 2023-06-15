@@ -163,7 +163,7 @@ async function run(){
     });
 
     // get file from server//
-    app.get('/uploadProductImg/:filename', (req, res) => {
+    app.get('/var/productImg/:filename', (req, res) => {
       const { filename } = req.params;
       const imageUrl = path.join('/', 'var', 'productImg', filename);
       
