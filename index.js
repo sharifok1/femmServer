@@ -63,6 +63,7 @@ async function run() {
     const order = database.collection("Orders");
     const deliveryStatus = database.collection("orderStatus");
     const banner = database.collection("banner");
+    const coupon = database.collection("coupon");
 
     // --------------------------get all products//----------------get
     app.get("/allproducts", async (req, res) => {
@@ -192,6 +193,32 @@ async function run() {
         res.status(404).json({ message: "Image not found" });
       }
     });
+
+ //--------------------------Add Coupon Code-------------------Coupon---post
+ app.post("/coupons", async (req, res) => {
+  const coupons = req.body;
+  const result = await coupon.insertOne(coupons);
+  res.json(result);
+});
+//------------------------Delete a product------------------coupon---delete
+app.delete("/coupons/:id", async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: ObjectId(id) };
+  const result = await coupon.deleteOne(query);
+  res.send(result)
+  // console.log(result)
+});
+
+//------------------------get coupon code------------------coupon----get
+app.get("/coupons", async (req, res) => {
+  const coupons = coupon.find();
+  const result = await coupons.toArray();
+  res.send(result);
+});
+
+
+
+
   } finally {
     // await client.close(); //
   }
