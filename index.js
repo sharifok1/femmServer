@@ -61,7 +61,7 @@ async function run() {
     const database = client.db("innerFashion");
     const allProducts = database.collection("Allproducts");
     const order = database.collection("Orders");
-    const deliveryStatus = database.collection("orderStatus");
+    const orderStatus = database.collection("orderStatus");
     const banner = database.collection("banner");
     const coupon = database.collection("coupon");
 
@@ -147,29 +147,24 @@ async function run() {
     //--------------------------store status order---------------------post
     app.post("/orderStatus", async (req, res) => {
       const newStatus = req.body;
-      const result = await deliveryStatus.insertOne(newStatus);
+      const result = await orderStatus.insertOne(newStatus);
       res.json(result);
     });
     //--------------------------get status order--------------------get
     app.get("/orderStatus", async (req, res) => {
-      const statusOrder = deliveryStatus.find();
+      const statusOrder = orderStatus.find();
       const result = await statusOrder.toArray();
       res.send(result);
     });
     //------------------------Delete status order---------------------delete
-    app.delete("/deliveryStatus/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: ObjectId(id) };
-      try {
-        const result = await deliveryStatus.deleteOne(query);
-        res.json(result);
-      } catch (error) {
-        console.error("Error occurred during deletion:", error);
-        res.status(500).json({ error: "An error occurred during deletion" });
-      }
+    app.delete("/orderStatus/:id", async (req, res) => {
+      const {id} = req.params;
+      const result = await orderStatus.deleteOne({_id:id});
+      res.send(result);
+      console.log(result,id)
     });
 
-    // Add an product image to to the hostainger server (path: var/productImg)
+    // Add an product image to the hostainger server (path: var/productImg)
     app.post('/uploadProductImg', upload.single('image'), async (req, res) => {
             // File has been uploaded to the /var/productImg directory
             // You can access the file details via req.file
@@ -179,7 +174,7 @@ async function run() {
             res.json({ message: 'image uploaded successfully', imageUrl:imageUrl});
           });
 
-    // get file from server//
+    // get image file from server//
     app.get("/var/productImg/:filename", (req, res) => {
       const { filename } = req.params;
       const imageUrl = path.join("/", "var", "productImg", filename);
@@ -194,13 +189,13 @@ async function run() {
       }
     });
 
- //--------------------------Add Coupon Code-------------------Coupon---post
+ //--------------------------Add Coupon Code----------------Coupon---post
  app.post("/coupons", async (req, res) => {
   const coupons = req.body;
   const result = await coupon.insertOne(coupons);
   res.json(result);
 });
-//------------------------Delete a product------------------coupon---delete
+//------------------------Delete a coupon------------------coupon---delete
 app.delete("/coupons/:id", async (req, res) => {
   const id = req.params.id;
   const query = { _id: ObjectId(id) };
@@ -215,9 +210,6 @@ app.get("/coupons", async (req, res) => {
   const result = await coupons.toArray();
   res.send(result);
 });
-
-
-
 
   } finally {
     // await client.close(); //
